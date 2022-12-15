@@ -5,21 +5,23 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.UI;   
 
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase
+    public class RemoveGroupTest : TestBase
     {
+
         [Test]
         public void GroupCreationTest()
         {
             OpenHomePage();
             Login("admin", "secret");
-            AddNewContact();
-            FillContactForm("Viktor", "Sokolov");
-            LinkNewContact();
+            GoToGroupsPage();
+            SelectGroup(1);
+            RemoveGroup();
+            ReturnToGroupsPage();
             ReturnToHome();
             LogOut();
         }
