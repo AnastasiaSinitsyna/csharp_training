@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,13 +15,12 @@ namespace WebAddressbookTests
         [Test]
         public void GroupCreationTest()
         {
-            OpenHomePage();
-            Login("admin", "secret");
-            AddNewContact();
-            FillContactForm("Viktor", "Sokolov");
-            LinkNewContact();
-            ReturnToHome();
-            LogOut();
+            app.Contacts
+                .AddNewContact()
+                .FillContactForm("Viktor", "Sokolov")
+                .LinkNewContact();
+            app.Navigator.ReturnToHome();
+            app.Auth.LogOut();
         }
     }
 }
