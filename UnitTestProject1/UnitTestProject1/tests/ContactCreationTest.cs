@@ -13,7 +13,7 @@ namespace WebAddressbookTests
     public class ContactCreationTests : TestBase
     {
         [Test]
-        public void GroupCreationTest()
+        public void ContactCreationTest()
         {
             app.Contacts
                 .AddNewContact()

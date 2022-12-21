@@ -19,7 +19,6 @@ namespace WebAddressbookTests
             group.Header = "Two";
             group.Footer = "Three";
 
-            app.Navigator.GoToGroupsPage();
             app.Groups.Create(group);
             app.Navigator.ReturnToHome();
             app.Auth.LogOut();
@@ -31,7 +30,6 @@ namespace WebAddressbookTests
             group.Header = "";
             group.Footer = "";
 
-            app.Navigator.GoToGroupsPage();
             app.Groups.Create(group);
             app.Navigator.ReturnToHome();   
             app.Auth.LogOut();

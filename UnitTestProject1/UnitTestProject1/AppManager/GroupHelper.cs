@@ -9,6 +9,7 @@ namespace WebAddressbookTests
         }
         public GroupHelper Create(GroupData group)
         {
+            manager.Navigator.GoToGroupsPage();
             UnitNewGroupCreation();
             FillGroupForm(group);
             LinkSubmit();
@@ -54,6 +55,17 @@ namespace WebAddressbookTests
         public void ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
+        }
+        public void Remove(int p)
+        {
+            manager.Navigator.GoToGroupsPage();
+            manager.Groups
+                .SelectGroup(1)
+                .RemoveGroup()
+                .ReturnToGroupsPage();
+            manager.Navigator.ReturnToHome();
+            manager.Auth.LogOut();
+            return this;
         }
     }
 }
