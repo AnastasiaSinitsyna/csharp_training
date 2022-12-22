@@ -52,11 +52,12 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("submit")).Click();
             return this;
         }
-        public void ReturnToGroupsPage()
+        public GroupHelper ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
+            return this;
         }
-        public void Remove(int p)
+        public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupsPage();
             manager.Groups
