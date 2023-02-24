@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ulearn", "Ulearn\Ulearn.csproj", "{9317E80D-27BB-4E79-B1D0-5CB7582DAC70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9317E80D-27BB-4E79-B1D0-5CB7582DAC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9317E80D-27BB-4E79-B1D0-5CB7582DAC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9317E80D-27BB-4E79-B1D0-5CB7582DAC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9317E80D-27BB-4E79-B1D0-5CB7582DAC70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB8A4376-48A7-4BA3-BE60-61A09B228A97}
+	EndGlobalSection
+EndGlobal
