@@ -41,7 +41,7 @@ namespace WebAddressbookTests
             }
             set
             {
-                name = value;
+                header = value;
             }
         }
         public string Footer
@@ -52,7 +52,7 @@ namespace WebAddressbookTests
             }
             set
             {
-                name = value;
+                footer = value;
             }
         }
     }

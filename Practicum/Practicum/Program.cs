@@ -9,8 +9,8 @@ namespace Practicum
 {
     internal class Program
     {
-        static void Main()
-        {
+        static void Mai()
+       {
             /* byte num_1 = 5;
               char sim = 'F';
               string sms = "Привет!";
@@ -511,55 +511,56 @@ namespace Practicum
             int km = Dist(5, 1);
             Text(km);*/
 
-            Console.WriteLine("Напишите первое число: ");
-            int a = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Напишите второе число: ");
-            int b = Convert.ToInt32(Console.ReadLine());
-            char res = Res(a, b);
-            Console.WriteLine("Ваш результат: " + a + res + b + ".");
+            /*  Console.WriteLine("Напишите первое число: ");
+              int a = Convert.ToInt32(Console.ReadLine());
+              Console.WriteLine("Напишите второе число: ");
+              int b = Convert.ToInt32(Console.ReadLine());
+              char res = Res(a, b);
+              Console.WriteLine("Ваш результат: " + a + res + b + ".");
+          }*/
+
+            /*public static byte Summa(byte[] digits)
+                {
+                    byte summ = 0;
+                    foreach (byte el in digits)
+                        summ += el;
+
+                    return summ;
+            }*/
+
+            /* public static int Dist(int x, int y)
+             {
+                 int res = x * y;
+                 return res;
+             }
+
+             public static void Text(int km)
+             {
+                 string word = km == 1 ? "Вы проедете 1 километр." : "Вы проедете: " + km + " километров.";
+                     Console.WriteLine(word);
+
+             }*/
+            /*
+             public static char Res(int num1, int num2)
+             {
+                 if (num1 < num2)
+                 {
+                     return '<';
+                 }
+                 else if (num1 > num2)
+                 {
+                     return '>';
+                 } 
+                 else if (num1 == num2)
+                 {
+                     return '=';
+                 }
+                 else {
+                     return 'e';
+                 }
+             }*/
+
+
         }
-
-        /*public static byte Summa(byte[] digits)
-            {
-                byte summ = 0;
-                foreach (byte el in digits)
-                    summ += el;
-
-                return summ;
-        }*/
-
-       /* public static int Dist(int x, int y)
-        {
-            int res = x * y;
-            return res;
-        }
-
-        public static void Text(int km)
-        {
-            string word = km == 1 ? "Вы проедете 1 километр." : "Вы проедете: " + km + " километров.";
-                Console.WriteLine(word);
-
-        }*/
-
-        public static char Res(int num1, int num2)
-        {
-            if (num1 < num2)
-            {
-                return '<';
-            }
-            else if (num1 > num2)
-            {
-                return '>';
-            } 
-            else if (num1 == num2)
-            {
-                return '=';
-            }
-            else {
-                return 'e';
-            }
-        }
-
-
     }
 }

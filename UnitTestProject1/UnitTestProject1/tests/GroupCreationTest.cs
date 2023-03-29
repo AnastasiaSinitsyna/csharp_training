@@ -15,9 +15,9 @@ namespace WebAddressbookTests
         [Test]
         public void GroupCreationTest()
         {
-            GroupData group = new GroupData("One");
-            group.Header = "Two";
-            group.Footer = "Three";
+            GroupData group = new GroupData("Test");
+            group.Header = "Test2";
+            group.Footer = "Test3";
 
             app.Groups.Create(group);
             app.Navigator.ReturnToHome();
