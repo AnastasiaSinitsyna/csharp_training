@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace WebAddressbookTests
 {
@@ -27,6 +28,16 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("group_footer")).Click();
             driver.FindElement(By.Name("group_footer")).Clear();
             driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            return this;
+        }
+        public GroupHelper Modify(int v, GroupData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(v);
+            UnitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
             return this;
         }
 
@@ -61,12 +72,23 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsPage();
             manager.Groups
-                .SelectGroup(1)
+                .SelectGroup(p)
                 .RemoveGroup()
                 .ReturnToGroupsPage();
-            manager.Navigator.ReturnToHome();
-            manager.Auth.LogOut();
             return this;
         }
+        public GroupHelper UnitGroupModification()
+        {
+            driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
+        public GroupHelper SubmitGroupModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+
     }
 }

@@ -10,14 +10,13 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class RemoveGroupTest : TestBase
+    public class RemoveGroupTests : TestBase
     {
 
         [Test]
-        public void GroupCreationTest()
+        public void RemoveGroupTest()
         {
             app.Groups.Remove(1);
-            
         }
 
         
