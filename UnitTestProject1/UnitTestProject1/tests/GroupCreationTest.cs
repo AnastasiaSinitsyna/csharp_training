@@ -20,8 +20,6 @@ namespace WebAddressbookTests
             group.Footer = "Test3";
 
             app.Groups.Create(group);
-            app.Groups.ReturnToGroupsPage();
-            app.Auth.LogOut();
         }
         [Test]
         public void EmptyGroupCreationTest()
@@ -31,9 +29,6 @@ namespace WebAddressbookTests
             group.Footer = "";
 
             app.Groups.Create(group);
-            app.Groups.ReturnToGroupsPage();   
-            app.Auth.LogOut();
-
         }
     }
 }
