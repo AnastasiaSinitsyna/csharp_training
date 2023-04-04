@@ -7,15 +7,15 @@ namespace WebAddressbookTests
 {
     public class TestBase
     {
-        protected IWebDriver driver;
-        protected string baseURL;
+        /*protected IWebDriver driver;
+        protected string baseURL;*/
 
         protected ApplicationManager app;
 
         [SetUp] 
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            app = TestSuiteFixture.app;
+            app = ApplicationManager.GetInstance();
         }
 
     }

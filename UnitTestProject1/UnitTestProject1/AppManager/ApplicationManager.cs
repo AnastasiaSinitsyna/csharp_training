@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace WebAddressbookTests
 {   
@@ -18,7 +19,9 @@ namespace WebAddressbookTests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
-        public ApplicationManager ()
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+
+        private ApplicationManager ()
         {
             driver = new FirefoxDriver();
             baseURL = "http://localhost/addressbook/";
@@ -27,6 +30,29 @@ namespace WebAddressbookTests
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
         }
+
+        public static ApplicationManager GetInstance ()
+        {
+            if (! app.IsValueCreated)
+            {
+                ApplicationManager newInstance = new ApplicationManager();
+                newInstance.Navigator.OpenHomePage();
+                app.Value = newInstance;
+            }
+            return app.Value;
+        }
+
+        ~ApplicationManager()
+        {
+            try
+            {
+                driver.Quit();
+            }
+            catch (Exception)
+            {
+                // Ignore errors if unable to close the browser
+            }
+        }
         public IWebDriver Driver {
 
             get 
@@ -34,17 +60,7 @@ namespace WebAddressbookTests
                 return driver;
             } 
         }
-        public void Stop()
-        {
-            try
-            {
-                driver.Quit();
-            }
-            catch (Exception)
-            {   
-                // Ignore errors if unable to close the browser
-            }
-        }
+ 
         public LoginHelper Auth
         {
             get

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class RemoveContactTests : TestBase
+    public class RemoveContactTests : AuthTestBase
     {
         [Test]
         public void RemoveContactTest()
