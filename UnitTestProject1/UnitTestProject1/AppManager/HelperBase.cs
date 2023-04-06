@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace WebAddressbookTests
 {
@@ -12,12 +13,13 @@ namespace WebAddressbookTests
         }
         public void Type(By locator, string text)
         {
-            if (text != null)
-            {
-                driver.FindElement(locator).Click();
-                driver.FindElement(locator).Clear();
-                driver.FindElement(locator).SendKeys(text);
-            }
+            if (text == null)
+                throw new ArgumentNullException();
+
+            driver.FindElement(locator).Click();
+            driver.FindElement(locator).Clear();
+            driver.FindElement(locator).SendKeys(text);
+
         }
         public bool IsElementPresent(By by)
         {
