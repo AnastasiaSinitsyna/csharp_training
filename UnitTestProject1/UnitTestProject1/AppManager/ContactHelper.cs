@@ -15,6 +15,11 @@ namespace WebAddressbookTests
         { 
         }
 
+        public bool ContactAvailable()
+        {
+            return IsElementPresent(By.Name("entry"));
+        }
+
         public ContactHelper LinkNewContact()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
@@ -37,11 +42,34 @@ namespace WebAddressbookTests
         public ContactHelper Modify(int v, ContactData newData)
         {
             manager.Navigator.OpenHomePage();
-            manager.Contacts.Edit(v);
-            FillContactForm(newData);
-            SubmitContactModification();
-            manager.Contacts.ReturnToHomePage();
+            if (ContactAvailable())
+            {
+                Edit(v);
+                FillContactForm(newData);
+                SubmitContactModification();
+                ReturnToHomePage();
+                return this;
+            }
+            else
+            {
+                CreateSomeContaсt();
+                Edit(v);
+                FillContactForm(newData);
+                SubmitContactModification();
+                ReturnToHomePage();
+                return this;
+            }
+        }
+        public ContactHelper CreateSomeContaсt()
+        {
+            ContactData contact = new ContactData();
+            contact.FirstName = "Test";
+            contact.LastName = "Test2";
 
+            AddNewContact();
+            FillContactForm(contact);
+            LinkNewContact();
+            ReturnToHomePage();
             return this;
         }
 
@@ -60,12 +88,23 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(int v)
         {
-            manager.Navigator.OpenHomePage();
-            manager.Contacts
-                .SelectContact(v)
-                .RemoveContact()
-                .CloseAlert();
-            return this;
+        if (ContactAvailable())
+            {
+                manager.Navigator.OpenHomePage();
+                SelectContact(v);
+                RemoveContact();
+                CloseAlert();
+                return this;
+            }
+        else
+            {
+                manager.Navigator.OpenHomePage();
+                CreateSomeContaсt();
+                SelectContact(v);
+                RemoveContact();
+                CloseAlert();
+                return this;
+            }
         }
 
         public ContactHelper CloseAlert()

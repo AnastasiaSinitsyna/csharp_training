@@ -27,13 +27,27 @@ namespace WebAddressbookTests
 
         public GroupHelper Modify(int v, GroupData newData)
         {
-            manager.Navigator.GoToGroupsPage();
-            SelectGroup(v);
-            UnitGroupModification();
-            FillGroupForm(newData);
-            SubmitGroupModification();
-            ReturnToGroupsPage();
-            return this;
+            if (GroupAvailable())
+            {
+                manager.Navigator.GoToGroupsPage();
+                SelectGroup(v);
+                UnitGroupModification();
+                FillGroupForm(newData);
+                SubmitGroupModification();
+                ReturnToGroupsPage();
+                return this;
+            }
+            else
+            {
+                CreateSomeGroup();
+                manager.Navigator.GoToGroupsPage();
+                SelectGroup(v);
+                UnitGroupModification();
+                FillGroupForm(newData);
+                SubmitGroupModification();
+                ReturnToGroupsPage();
+                return this;
+            }
         }
 
         public GroupHelper UnitNewGroupCreation()
@@ -63,15 +77,41 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("group page")).Click();
             return this;
         }
+        public bool GroupAvailable()
+        {
+            return IsElementPresent(By.Name("selected[]"));
+        }
+
         public GroupHelper Remove(int p)
         {
-            manager.Navigator.GoToGroupsPage();
-            manager.Groups
-                .SelectGroup(p)
-                .RemoveGroup()
-                .ReturnToGroupsPage();
-            return this;
+            if (GroupAvailable()) 
+            {
+                manager.Navigator.GoToGroupsPage();
+                SelectGroup(p);
+                RemoveGroup();
+                ReturnToGroupsPage();
+                return this;
+            }
+            else
+            {
+                CreateSomeGroup();
+                manager.Navigator.GoToGroupsPage();
+                SelectGroup(p);
+                RemoveGroup();
+                ReturnToGroupsPage();
+                return this;
+            }
         }
+
+        private void CreateSomeGroup()
+        {
+            GroupData group = new GroupData("Test");
+            group.Header = "Test2";
+            group.Footer = "Test3";
+
+            Create(group);
+        }
+
         public GroupHelper UnitGroupModification()
         {
             driver.FindElement(By.Name("edit")).Click();
