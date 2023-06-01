@@ -14,7 +14,18 @@ namespace WebAddressbookTests
         [Test]
         public void RemoveContactTest()
         {
-            app.Contacts.Remove(1);
+            int n = 1; //порядковый номер удаляемого контакта
+
+            List<string> oldContacts = app.Contacts.GetContactList();
+
+            app.Contacts.Remove(n);
+            //app.Navigator.OpenHomePage();
+
+            List<string> newContacts = app.Contacts.GetContactList();
+            oldContacts.Sort();
+            newContacts.Sort();
+            oldContacts.RemoveAt(n-1);
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }
