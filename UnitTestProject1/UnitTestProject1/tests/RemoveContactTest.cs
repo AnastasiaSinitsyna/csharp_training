@@ -16,14 +16,13 @@ namespace WebAddressbookTests
         {
             int n = 1; //порядковый номер удаляемого контакта
 
-            List<string> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
 
             app.Contacts.Remove(n);
-            //app.Navigator.OpenHomePage();
 
-            List<string> newContacts = app.Contacts.GetContactList();
-            oldContacts.Sort();
-            newContacts.Sort();
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
+            newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             oldContacts.RemoveAt(n-1);
             Assert.AreEqual(oldContacts, newContacts);
         }

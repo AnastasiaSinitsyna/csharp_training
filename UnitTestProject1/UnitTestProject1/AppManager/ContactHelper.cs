@@ -122,16 +122,16 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("home page")).Click();
             return this;
         }
-        public List<string> GetContactList()
+        public List<ContactData> GetContactList()
         {
-            List<string> contacts = new List<string>();
+            List<ContactData> contacts = new List<ContactData>();
             manager.Navigator.OpenHomePage();
             ICollection<IWebElement> rows = driver.FindElements(By.XPath("//table[@id='maintable']/tbody/tr[@name = 'entry']"));
             foreach (IWebElement row in rows)
             {
                 string lastName = row.FindElement(By.XPath("./td[2]")).Text;
                 string firstName = row.FindElement(By.XPath("./td[3]")).Text;
-                contacts.Add(lastName + firstName);
+                contacts.Add(new ContactData(firstName, lastName));
             }
             return contacts;
         }
