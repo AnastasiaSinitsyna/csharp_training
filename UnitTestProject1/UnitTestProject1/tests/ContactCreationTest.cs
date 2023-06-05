@@ -18,8 +18,8 @@ namespace WebAddressbookTests
         public void ContactCreationTest()
         {
             ContactData contact = new ContactData();
-            contact.FirstName = "Анастасия";
-            contact.LastName = "Синицына";
+            contact.FirstName = "Юлия";
+            contact.LastName = "Милонова";
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
 
@@ -28,6 +28,9 @@ namespace WebAddressbookTests
                 .FillContactForm(contact)
                 .LinkNewContact();
             app.Contacts.ReturnToHomePage();
+                
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
+
             List<ContactData> newContacts = app.Contacts.GetContactList();
             oldContacts.Add(contact);
             oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
