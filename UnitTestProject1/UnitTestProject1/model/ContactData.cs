@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,8 @@ namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>
     {
+        private string allPhones;
+        private string allEmail;
 
         public ContactData()
         {
@@ -38,5 +41,72 @@ namespace WebAddressbookTests
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Id { get; set; }
+        public string Address { get; set; }
+        public string PhoneHome { get; set; }
+        public string PhoneMobile { get; set; }
+        public string PhoneWork { get; set; }
+        public string Email { get; set; }
+        public string Email2 { get; set; }
+        public string Email3 { get; set; }
+        public string AllPhone
+        {
+            get
+            {
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (CleanUp(PhoneHome) + CleanUp(PhoneMobile) + CleanUp(PhoneWork)).Trim();
+                }
+            }
+            set
+            {
+                allPhones = value;
+            }
+        }
+        public string AllEmail 
+        {
+            get 
+                { 
+                if (allEmail != null)
+                {
+                    return allEmail;
+                }
+                else
+                {
+                    return (CleanUpEmail(Email) + CleanUpEmail(Email2) + CleanUpEmail(Email3)).Trim();
+                }
+                }
+            set 
+                {
+                allEmail = value;
+                } 
+        }
+
+        private string CleanUpEmail(string email)
+        {
+            if (email == null || email == "")
+            {
+                return "";
+            }
+            else
+            {
+                return email.Replace(" ", "") + "\r\n";
+            }
+        }
+
+        private string CleanUp(string phone)
+        {
+            if(phone == null || phone == "")
+            {
+                return "";
+            }
+            else
+            {
+                return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+            }
+        }
     }
 }

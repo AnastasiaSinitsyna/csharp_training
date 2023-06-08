@@ -18,8 +18,9 @@ namespace WebAddressbookTests
             int n = 1; //порядковый номер удаляемого контакта
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
-            System.Threading.Thread.Sleep(500);
+            
             app.Contacts.Remove(n);
+            app.Navigator.OpenHomePage();
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactsCount());
 

@@ -150,8 +150,55 @@ namespace WebAddressbookTests
         }
         public int GetContactsCount()
         {
-            manager.Navigator.OpenHomePage();
+            System.Threading.Thread.Sleep(500);
             return driver.FindElements(By.XPath("//table[@id='maintable']/tbody/tr[@name = 'entry']")).Count;
+        }
+
+        public ContactData GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.OpenHomePage();   
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"));
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string allEmail = cells[4].Text;
+            string allPhone = cells[5].Text;
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                AllPhone = allPhone,
+                AllEmail = allEmail
+            };
+
+        }
+
+        public ContactData GetContactInformationFromEditForm(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            Edit(index+1);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+
+            string phoneHome = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string phoneMobile = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string phoneWork = driver.FindElement(By.Name("work")).GetAttribute("value");
+
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                PhoneHome = phoneHome,
+                PhoneMobile = phoneMobile,
+                PhoneWork = phoneWork,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3
+            };
         }
     }
 }
