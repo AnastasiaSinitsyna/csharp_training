@@ -4,8 +4,10 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace WebAddressbookTests
+using System.Text.RegularExpressions;
+    
+    
+    namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>
     {
@@ -105,7 +107,7 @@ namespace WebAddressbookTests
             }
             else
             {
-                return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+                return Regex.Replace (phone, "[ -()]", "") + "\r\n";
             }
         }
     }
