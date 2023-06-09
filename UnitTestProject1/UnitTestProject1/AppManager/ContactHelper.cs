@@ -80,7 +80,7 @@ namespace WebAddressbookTests
         }
         public ContactHelper Edit(int index)
         {
-            int i = index + 1;
+            int i = index + 2;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ i +"]/td[8]/a/img")).Click();
             return this;
         }
@@ -176,7 +176,8 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFromEditForm(int index)
         {
             manager.Navigator.OpenHomePage();
-            Edit(index+1);
+            Edit(index);
+
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
@@ -199,6 +200,23 @@ namespace WebAddressbookTests
                 Email2 = email2,
                 Email3 = email3
             };
+        }
+
+        public string GetContactInformationFromDetailsForm(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            OpenDetailsInfoAboutContact(index);
+
+            IList<IWebElement> different = driver.FindElements(By.Id("content"));
+            string allInfoAboutContact = different[0].Text;
+
+            return allInfoAboutContact.Replace("\r\n", "").Replace("H: ", "").Replace("M: ", "").Replace("W: ", "").Replace(" ", "");
+        }
+
+        public void OpenDetailsInfoAboutContact(int index)
+        {
+            index = index + 2;
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ index +"]/td[7]/a/img")).Click();
         }
     }
 }
