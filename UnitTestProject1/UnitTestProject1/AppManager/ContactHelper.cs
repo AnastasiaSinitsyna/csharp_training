@@ -39,7 +39,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("add new")).Click();
             return this;
         }
-        public ContactHelper Modify(int v, ContactData newData)
+       /* public ContactHelper Modify(int v, ContactData newData)
         {
             manager.Navigator.OpenHomePage();
             if (ContactAvailable())
@@ -59,7 +59,7 @@ namespace WebAddressbookTests
                 ReturnToHomePage();
                 return this;
             }
-        }
+        }*/
         public ContactHelper CreateSomeContaсt()
         {
             ContactData contact = new ContactData();
@@ -80,30 +80,11 @@ namespace WebAddressbookTests
         }
         public ContactHelper Edit(int index)
         {
-            int i = index + 2;
+            int i = index + 1;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ i +"]/td[8]/a/img")).Click();
             return this;
         }
-        public ContactHelper Remove(int v)
-        {
-        if (ContactAvailable())
-            {
-                manager.Navigator.OpenHomePage();
-                SelectContact(v);
-                RemoveContact();
-                CloseAlert();
-                return this;
-            }
-        else
-            {
-                manager.Navigator.OpenHomePage();
-                CreateSomeContaсt();
-                SelectContact(v);
-                RemoveContact();
-                CloseAlert();
-                return this;
-            }
-        }
+
         public ContactHelper CloseAlert()
         {
             driver.SwitchTo().Alert().Accept();

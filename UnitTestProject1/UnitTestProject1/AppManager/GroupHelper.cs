@@ -30,31 +30,6 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper Modify(int v, GroupData newData)
-        {
-            if (GroupAvailable())
-            {
-                manager.Navigator.GoToGroupsPage();
-                SelectGroup(v);
-                UnitGroupModification();
-                FillGroupForm(newData);
-                SubmitGroupModification();
-                ReturnToGroupsPage();
-                return this;
-            }
-            else
-            {
-                CreateSomeGroup();
-                manager.Navigator.GoToGroupsPage();
-                SelectGroup(v);
-                UnitGroupModification();
-                FillGroupForm(newData);
-                SubmitGroupModification();
-                ReturnToGroupsPage();
-                return this;
-            }
-        }
-
         public GroupHelper UnitNewGroupCreation()
         {
             driver.FindElement(By.Name("new")).Click();
@@ -70,7 +45,7 @@ namespace WebAddressbookTests
 
         public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + (index + 1) + "]/input")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + (index) + "]/input")).Click();
             return this;
         }
         public GroupHelper LinkSubmit()
@@ -87,36 +62,6 @@ namespace WebAddressbookTests
         public bool GroupAvailable()
         {
             return IsElementPresent(By.Name("selected[]"));
-        }
-
-        public GroupHelper Remove(int p)
-        {
-            if (GroupAvailable()) 
-            {
-                manager.Navigator.GoToGroupsPage();
-                SelectGroup(p);
-                RemoveGroup();
-                ReturnToGroupsPage();
-                return this;
-            }
-            else
-            {
-                CreateSomeGroup();
-                manager.Navigator.GoToGroupsPage();
-                SelectGroup(p);
-                RemoveGroup();
-                ReturnToGroupsPage();
-                return this;
-            }
-        }
-
-        private void CreateSomeGroup()
-        {
-            GroupData group = new GroupData("Test");
-            group.Header = "Test2";
-            group.Footer = "Test3";
-
-            Create(group);
         }
 
         public GroupHelper UnitGroupModification()

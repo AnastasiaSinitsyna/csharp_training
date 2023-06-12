@@ -13,19 +13,47 @@ namespace WebAddressbookTests
         [Test]
         public void GroupModificationTest()
         {
+            int n = 9; // модифицируемый элемент, начиная с 1
             GroupData newData = new GroupData("Mod1");
             newData.Header = "Mod2";
             newData.Footer = "Mod3";
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
-            GroupData oldData = oldGroups[0];
 
-            app.Groups.Modify(0, newData);
+            app.Navigator.GoToGroupsPage();
+            GroupData oldData;
+
+            if (oldGroups.Count >= n && app.Groups.GroupAvailable())
+            {
+                oldData = oldGroups[n - 1];
+                app.Groups.SelectGroup(n)
+                .UnitGroupModification()
+                .FillGroupForm(newData)
+                .SubmitGroupModification()
+                .ReturnToGroupsPage();
+            }
+            else
+            {
+                do
+                {
+                    app.Groups.Create(new GroupData("Test1", "Test2", "Test3"));
+                    oldGroups = app.Groups.GetGroupList();
+                }
+                while (oldGroups.Count < n);
+
+                oldData = oldGroups[n - 1];
+                app.Navigator.GoToGroupsPage();
+                app.Groups.SelectGroup(n)
+                .UnitGroupModification()
+                .FillGroupForm(newData)
+                .SubmitGroupModification()
+                .ReturnToGroupsPage();
+            }
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups[0].Name = newData.Name;
+            oldGroups[n-1].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);

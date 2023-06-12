@@ -14,17 +14,41 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModificationTest()
         {
-            int n = 0;
+            int n = 7; //порядковый номер модифицируемого контакта
             ContactData newData = new ContactData();
             newData.FirstName = "Павел";
             newData.LastName = "Дуров";
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
-            ContactData oldData = oldContacts[n];
-            app.Contacts.Modify(n, newData);
+            ContactData oldData;
+
+            if (oldContacts.Count >= n)
+            {
+                oldData = oldContacts[n-1];
+                app.Contacts.Edit(n)
+                .FillContactForm(newData)
+                .SubmitContactModification()
+                .ReturnToHomePage();
+            }
+            else
+            {
+                do
+                {
+                    app.Navigator.OpenHomePage();
+                    app.Contacts.CreateSomeContaсt();
+                    oldContacts = app.Contacts.GetContactList();
+                }
+                while (oldContacts.Count < n);
+
+                oldData = oldContacts[n - 1];
+                app.Contacts.Edit(n)
+                .FillContactForm(newData)
+                .SubmitContactModification()
+                .ReturnToHomePage();
+            }
 
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            oldContacts[n] = newData;
+            oldContacts[n-1] = newData;
             oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             Assert.AreEqual(oldContacts, newContacts);
