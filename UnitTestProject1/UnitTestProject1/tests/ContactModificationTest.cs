@@ -22,30 +22,21 @@ namespace WebAddressbookTests
             List<ContactData> oldContacts = app.Contacts.GetContactList();
             ContactData oldData;
 
-            if (oldContacts.Count >= n)
-            {
-                oldData = oldContacts[n-1];
-                app.Contacts.Edit(n)
-                .FillContactForm(newData)
-                .SubmitContactModification()
-                .ReturnToHomePage();
-            }
-            else
+            if (oldContacts.Count < n)
             {
                 do
                 {
-                    app.Navigator.OpenHomePage();
                     app.Contacts.CreateSomeContaсt();
                     oldContacts = app.Contacts.GetContactList();
                 }
                 while (oldContacts.Count < n);
-
-                oldData = oldContacts[n - 1];
-                app.Contacts.Edit(n)
-                .FillContactForm(newData)
-                .SubmitContactModification()
-                .ReturnToHomePage();
             }
+       
+            oldData = oldContacts[n - 1];
+            app.Contacts.Edit(n)
+            .FillContactForm(newData)
+            .SubmitContactModification()
+            .ReturnToHomePage();
 
             List<ContactData> newContacts = app.Contacts.GetContactList();
             oldContacts[n-1] = newData;

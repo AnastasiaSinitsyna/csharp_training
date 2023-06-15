@@ -20,19 +20,9 @@ namespace WebAddressbookTests
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
-            app.Navigator.GoToGroupsPage();
             GroupData oldData;
 
-            if (oldGroups.Count >= n && app.Groups.GroupAvailable())
-            {
-                oldData = oldGroups[n - 1];
-                app.Groups.SelectGroup(n)
-                .UnitGroupModification()
-                .FillGroupForm(newData)
-                .SubmitGroupModification()
-                .ReturnToGroupsPage();
-            }
-            else
+            if (oldGroups.Count < n)
             {
                 do
                 {
@@ -40,15 +30,15 @@ namespace WebAddressbookTests
                     oldGroups = app.Groups.GetGroupList();
                 }
                 while (oldGroups.Count < n);
-
-                oldData = oldGroups[n - 1];
-                app.Navigator.GoToGroupsPage();
-                app.Groups.SelectGroup(n)
-                .UnitGroupModification()
-                .FillGroupForm(newData)
-                .SubmitGroupModification()
-                .ReturnToGroupsPage();
             }
+
+            oldData = oldGroups[n - 1];
+            app.Navigator.GoToGroupsPage();
+            app.Groups.SelectGroup(n)
+            .UnitGroupModification()
+            .FillGroupForm(newData)
+            .SubmitGroupModification()
+            .ReturnToGroupsPage();
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 

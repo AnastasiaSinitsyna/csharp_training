@@ -19,30 +19,21 @@ namespace WebAddressbookTests
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
 
-            if (oldContacts.Count >= n)
-            {
-                app.Navigator.OpenHomePage();
-                app.Contacts.SelectContact(n)
-                .RemoveContact()
-                .CloseAlert();
-            }
-            else
+            if (oldContacts.Count < n)
             {
                 do
                 {
-                    app.Navigator.OpenHomePage();
                     app.Contacts.CreateSomeContaсt();
                     oldContacts = app.Contacts.GetContactList();
                 }
                 while (oldContacts.Count < n);
+            }
 
                 app.Navigator.OpenHomePage();
                 app.Contacts.SelectContact(n)
                 .RemoveContact()
                 .CloseAlert();
-            }
-
-            app.Navigator.OpenHomePage();
+                app.Navigator.OpenHomePage();
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactsCount());
 

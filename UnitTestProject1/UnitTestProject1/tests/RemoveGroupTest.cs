@@ -17,18 +17,11 @@ namespace WebAddressbookTests
         [Test]
         public void RemoveGroupTest()
         {
-            int n = 6; // удаляемый элемент, начиная с 1
+            int n = 10; // удаляемый элемент, начиная с 1
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
-            app.Navigator.GoToGroupsPage();
-            if (oldGroups.Count >= n)
-            {
-                app.Groups.SelectGroup(n)
-                .RemoveGroup()
-                .ReturnToGroupsPage();
-            }
-            else
+            if (oldGroups.Count < n)
             {
                 do
                 {
@@ -36,12 +29,11 @@ namespace WebAddressbookTests
                     oldGroups = app.Groups.GetGroupList();
                 }
                 while (oldGroups.Count < n);
-
-                app.Navigator.GoToGroupsPage();
-                app.Groups.SelectGroup(n)
-                .RemoveGroup()
-                .ReturnToGroupsPage();
             }
+            app.Navigator.GoToGroupsPage();
+            app.Groups.SelectGroup(n)
+            .RemoveGroup()
+            .ReturnToGroupsPage();
 
             Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
 
