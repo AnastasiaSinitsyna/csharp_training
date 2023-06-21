@@ -33,6 +33,11 @@ using System.Text.RegularExpressions;
         {
             return FirstName.GetHashCode() ^ LastName.GetHashCode();
         }
+        public override string ToString()
+        {
+            return "firstName=" + FirstName + "\nlastName=" + LastName;
+        }
+
 
         public ContactData(string firstName, string lastName)
         {
