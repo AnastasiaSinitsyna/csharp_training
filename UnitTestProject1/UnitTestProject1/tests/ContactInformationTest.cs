@@ -30,15 +30,18 @@ namespace WebAddressbookTests
         [Test]
         public void TestContactDetailsInformation()
         {
-            int index = 1; //Порядковый номер контакта
+            int index = 4; //Порядковый номер контакта
             ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(index);
             string fromDetailsForm = app.Contacts.GetContactInformationFromDetailsForm(index - 1);
 
-            string SumText = fromForm.FirstName + fromForm.LastName 
-                + fromForm.Address 
-                + fromForm.PhoneHome + fromForm.PhoneMobile + fromForm.PhoneWork 
-                + fromForm.Email + fromForm.Email2 + fromForm.Email3;
-            SumText = SumText.Replace(" ", "");
+            string SumText = fromForm.FirstName + " " + fromForm.LastName + "\r\n"
+                + fromForm.Address + "\r\n\r\nH: "
+                + fromForm.PhoneHome + "\r\nM: "
+                + fromForm.PhoneMobile + "\r\nW: "
+                + fromForm.PhoneWork + "\r\n\r\n"
+                + fromForm.Email + "\r\n"
+                + fromForm.Email2 + "\r\n"
+                + fromForm.Email3;
 
             //verification
             Assert.AreEqual(SumText, fromDetailsForm);

@@ -188,10 +188,11 @@ namespace WebAddressbookTests
             manager.Navigator.OpenHomePage();
             OpenDetailsInfoAboutContact(index);
 
-            IList<IWebElement> different = driver.FindElements(By.Id("content"));
-            string allInfoAboutContact = different[0].Text;
+            IWebElement different = driver.FindElement(By.Id("content"));
+            string allInfoAboutContact = different.Text;
 
-            return allInfoAboutContact.Replace("\r\n", "").Replace("H: ", "").Replace("M: ", "").Replace("W: ", "").Replace(" ", "");
+            return allInfoAboutContact;
+            //Replace("\r\n", "").Replace("H: ", "").Replace("M: ", "").Replace("W: ", "").Replace(" ", "")
         }
 
         public void OpenDetailsInfoAboutContact(int index)
