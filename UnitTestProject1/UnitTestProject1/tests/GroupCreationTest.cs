@@ -9,6 +9,10 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Xml;
+using System.Xml.Serialization;
+using NUnit.Framework.Constraints;
+using Newtonsoft.Json;
 
 namespace WebAddressbookTests
 {
@@ -29,7 +33,7 @@ namespace WebAddressbookTests
             return groups;
         }
 
-        public static IEnumerable<GroupData> GroupDataFromFile()
+        public static IEnumerable<GroupData> GroupDataFromCsvFile()
         {
             List<GroupData> groups = new List<GroupData>();
             string[] lines = File.ReadAllLines(@"groups.csv");
@@ -43,6 +47,18 @@ namespace WebAddressbookTests
                 });
             }
             return groups;
+        }
+        public static IEnumerable<GroupData> GroupDataFromXmlFile()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            return(List<GroupData>) 
+                new XmlSerializer(typeof(List<GroupData>))
+                    .Deserialize(new StreamReader(@"groups.xml"));
+        }
+        public static IEnumerable<GroupData> GroupDataFromJsonFile()
+        {
+            return JsonConvert.DeserializeObject<List<GroupData>>(
+                File.ReadAllText(@"groups.Json"));
         }
 
         [Test, TestCaseSource("RandomGroupDataProvider")]
@@ -81,8 +97,38 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroups, newGroups);
         }
 
-        [Test, TestCaseSource("GroupDataFromFile")]
-        public void FromFile(GroupData group)
+        [Test, TestCaseSource("GroupDataFromXmlFile")]
+        public void FromXmlFile(GroupData group)
+        {
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.Create(group);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+        [Test, TestCaseSource("GroupDataFromCsvFile")]
+        public void FromCsvFile(GroupData group)
+        {
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.Create(group);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
+        public void FromJsonFile(GroupData group)
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
