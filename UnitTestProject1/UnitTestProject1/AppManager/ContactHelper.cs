@@ -151,7 +151,6 @@ namespace WebAddressbookTests
                 AllPhone = allPhone,
                 AllEmail = allEmail
             };
-
         }
 
         public ContactData GetContactInformationFromEditForm(int index)
@@ -199,6 +198,30 @@ namespace WebAddressbookTests
         {
             index = index + 2;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ index +"]/td[7]/a/img")).Click();
+        }
+
+        public string SumText(ContactData fromForm)
+        {
+            string sumText = "";
+            if (fromForm.FirstName != "") 
+                sumText = fromForm.FirstName;
+            if (fromForm.LastName != "") 
+                sumText += " " + fromForm.LastName;
+            if (fromForm.Address != "") 
+                sumText += "\r\n" + fromForm.Address;
+            if (fromForm.PhoneHome != "") 
+                sumText += "\r\n\r\nH: " + fromForm.PhoneHome;
+            if (fromForm.PhoneMobile != "") 
+                sumText += "\r\nM: " + fromForm.PhoneMobile;
+            if (fromForm.PhoneWork != "") 
+                sumText += "\r\nW: " + fromForm.PhoneWork;
+            if (fromForm.Email != "")
+                sumText += "\r\n\r\n" + fromForm.Email;
+            if (fromForm.Email2 != "")
+                sumText += "\r\n" + fromForm.Email2;
+            if (fromForm.Email3 != "")
+                sumText += "\r\n" + fromForm.Email3;
+            return sumText;
         }
     }
 }

@@ -92,7 +92,7 @@ using System.Text.RegularExpressions;
                 } 
         }
 
-        private string CleanUpEmail(string email)
+        public string CleanUpEmail(string email)
         {
             if (email == null || email == "")
             {
@@ -101,6 +101,17 @@ using System.Text.RegularExpressions;
             else
             {
                 return email.Replace(" ", "") + "\r\n";
+            }
+        }
+        public string CleanUpPhone(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            else
+            {
+                return phone + "\r\n";
             }
         }
 
@@ -115,5 +126,6 @@ using System.Text.RegularExpressions;
                 return Regex.Replace (phone, "[ -()]", "") + "\r\n";
             }
         }
+
     }
 }
