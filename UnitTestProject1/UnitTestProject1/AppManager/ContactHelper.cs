@@ -31,6 +31,7 @@ namespace WebAddressbookTests
         {
             Type(By.Name("firstname"), contact.FirstName);
             Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("address"), contact.Address);
             return this;
         }
 
