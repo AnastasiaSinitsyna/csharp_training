@@ -69,7 +69,12 @@ namespace addressbook_test_data_generators
                 sheet.Cells[row, 3] = group.Footer;
                 row++;
             }
-            //wb.SaveAs(Path.Combine(Directory) filename);
+            string fullPass = Path.Combine(Directory.GetCurrentDirectory(), filename);
+            File.Delete(fullPass);
+            wb.SaveAs(fullPass);
+            wb.Close();
+            app.Visible = false;
+            app.Quit();
         }
 
         static void writeGroupsToCsvFile(List<GroupData> groups, StreamWriter writer)

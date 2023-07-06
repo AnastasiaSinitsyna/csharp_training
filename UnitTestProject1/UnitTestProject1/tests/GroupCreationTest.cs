@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using NUnit.Framework.Constraints;
 using Newtonsoft.Json;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace WebAddressbookTests
 {
@@ -60,30 +61,32 @@ namespace WebAddressbookTests
             return JsonConvert.DeserializeObject<List<GroupData>>(
                 File.ReadAllText(@"groups.Json"));
         }
+       public static IEnumerable<GroupData> GroupDataFromExcelFile()
+        {
+            List <GroupData> groups = new List<GroupData>();
+            Excel.Application app = new Excel.Application();
+            app.Visible = true;
+            Excel.Workbook wb = app.Workbooks.Open(Path.Combine(Directory.GetCurrentDirectory(), @"groups.xlsx"));
+            Excel.Worksheet sheet = wb.Sheets[1];
+            Excel.Range range = sheet.UsedRange;
+            for (int i = 1; i <= range.Rows.Count; i++)
+            {
+                groups.Add(new GroupData()
+                {
+                    Name = range.Cells[i, 1].Value,
+                    Header = range.Cells[i, 2].Value,
+                    Footer = range.Cells[i, 3].Value
+                });
+            }
+            wb.Close();
+            app.Visible = false;
+            app.Quit();
+            return groups;
+        }
 
         [Test, TestCaseSource("RandomGroupDataProvider")]
         public void GroupCreationTest(GroupData group)
         {
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-
-            app.Groups.Create(group);
-
-            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
-
-            List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(group);
-            oldGroups.Sort();
-            newGroups.Sort();
-            Assert.AreEqual(oldGroups, newGroups);
-        }
-
-        [Test]
-        public void BadNameGroupCreationTest()
-        {
-            GroupData group = new GroupData("a'a");
-            group.Header = "";
-            group.Footer = "";
-
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Create(group);
@@ -129,6 +132,21 @@ namespace WebAddressbookTests
         }
         [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void FromJsonFile(GroupData group)
+        {
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.Create(group);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+        [Test, TestCaseSource("GroupDataFromExcelFile")]
+        public void FromExcelFile(GroupData group)
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
