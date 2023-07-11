@@ -40,27 +40,6 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("add new")).Click();
             return this;
         }
-       /* public ContactHelper Modify(int v, ContactData newData)
-        {
-            manager.Navigator.OpenHomePage();
-            if (ContactAvailable())
-            {
-                Edit(v);
-                FillContactForm(newData);
-                SubmitContactModification();
-                ReturnToHomePage();
-                return this;
-            }
-            else
-            {
-                CreateSomeContaсt();
-                Edit(v);
-                FillContactForm(newData);
-                SubmitContactModification();
-                ReturnToHomePage();
-                return this;
-            }
-        }*/
         public ContactHelper CreateSomeContaсt()
         {
             ContactData contact = new ContactData();
@@ -192,7 +171,6 @@ namespace WebAddressbookTests
             string allInfoAboutContact = different.Text;
 
             return allInfoAboutContact;
-            //Replace("\r\n", "").Replace("H: ", "").Replace("M: ", "").Replace("W: ", "").Replace(" ", "")
         }
 
         public void OpenDetailsInfoAboutContact(int index)
@@ -204,24 +182,42 @@ namespace WebAddressbookTests
         public string SumText(ContactData fromForm)
         {
             string sumText = "";
+
             if (fromForm.FirstName != "") 
                 sumText = fromForm.FirstName;
+
             if (fromForm.LastName != "") 
                 sumText += " " + fromForm.LastName;
+
             if (fromForm.Address != "") 
                 sumText += "\r\n" + fromForm.Address;
+
             if (fromForm.PhoneHome != "") 
                 sumText += "\r\n\r\nH: " + fromForm.PhoneHome;
-            if (fromForm.PhoneMobile != "") 
+
+            if (fromForm.PhoneMobile != "" && fromForm.PhoneHome != "") 
                 sumText += "\r\nM: " + fromForm.PhoneMobile;
-            if (fromForm.PhoneWork != "") 
+            else if (fromForm.PhoneMobile != "")
+                sumText += "\r\n\r\nM: " + fromForm.PhoneMobile;
+
+            if (fromForm.PhoneWork != "" && (fromForm.PhoneHome != "" || fromForm.PhoneHome != "")) 
                 sumText += "\r\nW: " + fromForm.PhoneWork;
+            else if (fromForm.PhoneWork != "")
+                sumText += "\r\n\r\nW: " + fromForm.PhoneWork;
+
             if (fromForm.Email != "")
                 sumText += "\r\n\r\n" + fromForm.Email;
-            if (fromForm.Email2 != "")
+
+            if (fromForm.Email2 != "" && fromForm.Email != "")
                 sumText += "\r\n" + fromForm.Email2;
-            if (fromForm.Email3 != "")
+            else if (fromForm.Email2 != "")
+                sumText += "\r\n\r\n" + fromForm.Email2;
+
+            if (fromForm.Email3 != "" && (fromForm.Email != "" || fromForm.Email2 !=""))
                 sumText += "\r\n" + fromForm.Email3;
+            else if (fromForm.Email3 != "")
+                sumText += "\r\n\r\n" + fromForm.Email3;
+
             return sumText;
         }
     }

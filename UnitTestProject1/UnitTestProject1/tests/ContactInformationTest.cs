@@ -30,7 +30,7 @@ namespace WebAddressbookTests
         [Test]
         public void TestContactDetailsInformation()
         {
-            int index = 3; //Порядковый номер контакта
+            int index = 5; //Порядковый номер контакта
             ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(index);
             string fromDetailsForm = app.Contacts.GetContactInformationFromDetailsForm(index - 1);
             string sumText = app.Contacts.SumText(fromForm);

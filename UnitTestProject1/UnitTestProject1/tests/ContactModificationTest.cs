@@ -14,12 +14,13 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModificationTest()
         {
-            int n = 7; //порядковый номер модифицируемого контакта
+            int n = 3; //порядковый номер модифицируемого контакта
             ContactData newData = new ContactData();
             newData.FirstName = "Павел";
             newData.LastName = "Дуров";
+            newData.Address = "Ул. Королёва 12, Санкт-Петербург";
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List <ContactData> oldContacts = app.Contacts.GetContactList();
             ContactData oldData;
 
             if (oldContacts.Count < n)
@@ -51,7 +52,6 @@ namespace WebAddressbookTests
                     Assert.AreEqual(newData.LastName, contact.LastName);
                 }
             }
-
         }
     }
 }

@@ -27,7 +27,8 @@ using System.Text.RegularExpressions;
             {
                 return true;
             }
-            return LastName == other.LastName && FirstName == other.FirstName;
+            return LastName == other.LastName 
+                && FirstName == other.FirstName;
         }
         public override int GetHashCode()
         {
