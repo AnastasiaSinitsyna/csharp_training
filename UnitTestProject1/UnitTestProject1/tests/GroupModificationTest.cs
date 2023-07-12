@@ -34,7 +34,7 @@ namespace WebAddressbookTests
 
             oldData = oldGroups[n - 1];
             app.Navigator.GoToGroupsPage();
-            app.Groups.SelectGroup(n)
+            app.Groups.SelectGroupByNumber(n)
             .UnitGroupModification()
             .FillGroupForm(newData)
             .SubmitGroupModification()

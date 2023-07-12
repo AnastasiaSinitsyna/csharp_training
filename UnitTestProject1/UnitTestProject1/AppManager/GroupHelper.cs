@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Google.Protobuf.WellKnownTypes;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,16 +37,37 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper RemoveGroup()
+        public GroupHelper Remove()
         {
             driver.FindElement(By.Name("delete")).Click();
             groupCache = null;
             return this;
         }
+        public GroupHelper RemoveGroupByNumber(int number)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroupByNumber(number);
+            Remove();
+            ReturnToGroupsPage();
+            return this;
+        }
+        public GroupHelper RemoveGroupById(GroupData groups)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroupById(groups.Id);
+            Remove();
+            ReturnToGroupsPage();
+            return this;
+        }
 
-        public GroupHelper SelectGroup(int index)
+        public GroupHelper SelectGroupByNumber(int index)
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/span[" + (index) + "]/input")).Click();
+            return this;
+        }
+        public GroupHelper SelectGroupById(string id)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value='"+id+"'])")).Click();
             return this;
         }
         public GroupHelper LinkSubmit()
