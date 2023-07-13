@@ -8,17 +8,17 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : AuthTestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
-            int n = 9; // модифицируемый элемент, начиная с 1
+            int n = 1; // модифицируемый элемент, начиная с 1
             GroupData newData = new GroupData("Mod1");
             newData.Header = "Mod2";
             newData.Footer = "Mod3";
 
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             GroupData oldData;
 
@@ -27,22 +27,17 @@ namespace WebAddressbookTests
                 do
                 {
                     app.Groups.Create(new GroupData("Test1", "Test2", "Test3"));
-                    oldGroups = app.Groups.GetGroupList();
+                    oldGroups = GroupData.GetAll();
                 }
                 while (oldGroups.Count < n);
             }
-
             oldData = oldGroups[n - 1];
-            app.Navigator.GoToGroupsPage();
-            app.Groups.SelectGroupByNumber(n)
-            .UnitGroupModification()
-            .FillGroupForm(newData)
-            .SubmitGroupModification()
-            .ReturnToGroupsPage();
+            newData.Id = oldData.Id;
+            app.Groups.GroupModificationById(newData);
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups[n-1].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();

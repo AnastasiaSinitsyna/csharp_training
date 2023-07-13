@@ -91,6 +91,16 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("edit")).Click();
             return this;
         }
+        public GroupHelper GroupModificationById(GroupData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroupById(newData.Id);
+            UnitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
 
         public GroupHelper SubmitGroupModification()
         {

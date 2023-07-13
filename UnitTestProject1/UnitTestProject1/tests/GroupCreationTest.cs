@@ -19,7 +19,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupDataProvider()
         {
@@ -175,6 +175,16 @@ namespace WebAddressbookTests
             List<GroupData> fromDB = GroupData.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
+        }
+
+        [Test]
+        public void TestDBConnection()
+        {
+            foreach (ContactData contact in
+                GroupData.GetAll()[0].GetContacts())
+                {
+                System.Console.Out.WriteLine(contact);
+                }
         }
     }
 }

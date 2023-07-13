@@ -5,10 +5,11 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-    
-    
-    namespace WebAddressbookTests
+using LinqToDB.Mapping;
+
+namespace WebAddressbookTests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>
     {
         private string allPhones;
@@ -46,9 +47,15 @@ using System.Text.RegularExpressions;
             LastName = lastName;
         }
 
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
+
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
+
+        [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
+
         public string Address { get; set; }
         public string PhoneHome { get; set; }
         public string PhoneMobile { get; set; }
