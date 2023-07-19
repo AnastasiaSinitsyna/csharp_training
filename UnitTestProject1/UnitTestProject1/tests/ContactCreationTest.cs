@@ -49,17 +49,13 @@ namespace WebAddressbookTests
             [Test, TestCaseSource("RandomContactDataProvider")]
         public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
 
-            app.Contacts
-                .AddNewContact()
-                .FillContactForm(contact)
-                .LinkNewContact();
-            app.Contacts.ReturnToHomePage();
-                
+            app.Contacts.Create(contact);
+
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Add(contact);
             oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
@@ -70,17 +66,13 @@ namespace WebAddressbookTests
             [Test, TestCaseSource("ContactDataFromXmlFile")]
             public void FromXmlFile(ContactData contact)
             {
-                List<ContactData> oldContacts = app.Contacts.GetContactList();
+                List<ContactData> oldContacts = ContactData.GetAll();
 
-                app.Contacts
-                    .AddNewContact()
-                    .FillContactForm(contact)
-                    .LinkNewContact();
-                app.Contacts.ReturnToHomePage();
+            app.Contacts.Create(contact);
 
-                Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
 
-                List<ContactData> newContacts = app.Contacts.GetContactList();
+                List<ContactData> newContacts = ContactData.GetAll();
                 oldContacts.Add(contact);
                 oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
                 newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
@@ -91,23 +83,19 @@ namespace WebAddressbookTests
             [Test, TestCaseSource("ContactDataFromJsonFile")]
             public void FromJsonFile(ContactData contact)
             {
-                List<ContactData> oldContacts = app.Contacts.GetContactList();
+                List<ContactData> oldContacts = ContactData.GetAll();
 
-                app.Contacts
-                    .AddNewContact()
-                    .FillContactForm(contact)
-                    .LinkNewContact();
-                app.Contacts.ReturnToHomePage();
+                app.Contacts.Create(contact);
 
                 Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
 
-                List<ContactData> newContacts = app.Contacts.GetContactList();
+                List<ContactData> newContacts = ContactData.GetAll();
                 oldContacts.Add(contact);
                 oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
                 newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
 
                 Assert.AreEqual(oldContacts, newContacts);
             }
-        }
+    }
 }
 

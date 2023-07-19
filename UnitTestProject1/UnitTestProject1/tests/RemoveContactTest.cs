@@ -15,33 +15,28 @@ namespace WebAddressbookTests
         [Test]
         public void RemoveContactTest()
         {
-            int n = 6; //порядковый номер удаляемого контакта
+            int n = 2; //порядковый номер удаляемого контакта
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
 
             if (oldContacts.Count < n)
             {
                 do
                 {
                     app.Contacts.CreateSomeContaсt();
-                    oldContacts = app.Contacts.GetContactList();
+                    oldContacts = ContactData.GetAll();
                 }
                 while (oldContacts.Count < n);
             }
+            ContactData toBeRemoved = oldContacts[n - 1];
 
-                app.Navigator.OpenHomePage();
-                app.Contacts.SelectContact(n)
-                .RemoveContact()
-                .CloseAlert();
-                app.Navigator.OpenHomePage();
+            app.Contacts.RemoveContactById(toBeRemoved);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactsCount());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
-
-            ContactData toBeRemoved = oldContacts[n-1];
 
             oldContacts.RemoveAt(n-1);
             Assert.AreEqual(oldContacts, newContacts);

@@ -14,13 +14,13 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModificationTest()
         {
-            int n = 3; //порядковый номер модифицируемого контакта
+            int n = 4; //порядковый номер модифицируемого контакта
             ContactData newData = new ContactData();
-            newData.FirstName = "Павел";
-            newData.LastName = "Дуров";
-            newData.Address = "Ул. Королёва 12, Санкт-Петербург";
+            newData.FirstName = "Лена";
+            newData.LastName = "Весёлая";
+            newData.Address = "Ул. Пушкина 71, Москва";
 
-            List <ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
             ContactData oldData;
 
             if (oldContacts.Count < n)
@@ -28,18 +28,17 @@ namespace WebAddressbookTests
                 do
                 {
                     app.Contacts.CreateSomeContaсt();
-                    oldContacts = app.Contacts.GetContactList();
+                    oldContacts = ContactData.GetAll();
                 }
                 while (oldContacts.Count < n);
             }
        
             oldData = oldContacts[n - 1];
-            app.Contacts.Edit(n)
-            .FillContactForm(newData)
-            .SubmitContactModification()
-            .ReturnToHomePage();
+            newData.Id = oldData.Id;
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            app.Contacts.ContactModificationById(newData);
+
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts[n-1] = newData;
             oldContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));
             newContacts.Sort((left, right) => left.LastName.CompareTo(right.LastName));

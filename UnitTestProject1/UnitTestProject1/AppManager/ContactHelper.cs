@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Google.Protobuf.WellKnownTypes;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,15 @@ namespace WebAddressbookTests
             contactCache = null;
             return this;
         }
+        public ContactHelper Create(ContactData contact)
+        {
+            AddNewContact();
+            FillContactForm(contact);
+            LinkNewContact();
+            ReturnToHomePage();
+            return this;
+        }
+
         public ContactHelper FillContactForm(ContactData contact)
         {
             Type(By.Name("firstname"), contact.FirstName);
@@ -58,10 +68,23 @@ namespace WebAddressbookTests
             contactCache = null;
             return this;
         }
-        public ContactHelper Edit(int index)
+        public ContactHelper EditByNumber(int index)
         {
             int i = index + 1;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ i +"]/td[8]/a/img")).Click();
+            return this;
+        }
+        public ContactHelper EditById(string id)
+        {
+            driver.FindElement(By.XPath("//a[@href='edit.php?id="+id+"']")).Click();
+            return this;
+        }
+        public ContactHelper ContactModificationById(ContactData newData)
+        {
+            EditById(newData.Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToHomePage();
             return this;
         }
 
@@ -76,15 +99,38 @@ namespace WebAddressbookTests
             contactCache = null;
             return this;
         }
-        public ContactHelper SelectContact(int index)
+        public ContactHelper SelectContactByNumber(int index)
         {
             int n = index + 1;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ n +"]/td/input")).Click();
             return this;
         }
+        public ContactHelper SelectContactById(string id)
+        {
+            driver.FindElement(By.Id(id)).Click();
+            return this;
+        }
         public ContactHelper ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
+            return this;
+        }
+        public ContactHelper RemoveContactByNumber(int n)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectContactByNumber(n);
+            RemoveContact();
+            CloseAlert();
+            manager.Navigator.OpenHomePage();
+            return this;
+        }
+        public ContactHelper RemoveContactById(ContactData contact)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectContactById(contact.Id);
+            RemoveContact();
+            CloseAlert();
+            manager.Navigator.OpenHomePage();
             return this;
         }
 
@@ -132,11 +178,10 @@ namespace WebAddressbookTests
                 AllEmail = allEmail
             };
         }
-
         public ContactData GetContactInformationFromEditForm(int index)
         {
             manager.Navigator.OpenHomePage();
-            Edit(index);
+            EditByNumber(index);
 
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
