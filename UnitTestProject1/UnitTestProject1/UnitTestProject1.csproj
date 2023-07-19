@@ -128,6 +128,7 @@
     <Compile Include="model\ContactData.cs" />
     <Compile Include="model\GroupContactRelation.cs" />
     <Compile Include="model\GroupData.cs" />
+    <Compile Include="tests\AddingContactToGroupTests.cs" />
     <Compile Include="tests\AuthTestBase.cs" />
     <Compile Include="tests\ContactInformationTest.cs" />
     <Compile Include="tests\ContactModificationTest.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="tests\GroupModificationTest.cs" />
     <Compile Include="tests\GroupTestBase.cs" />
     <Compile Include="tests\LoginTests.cs" />
+    <Compile Include="tests\RemoveContactFromGroupTests.cs" />
     <Compile Include="tests\RemoveContactTest.cs" />
     <Compile Include="tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

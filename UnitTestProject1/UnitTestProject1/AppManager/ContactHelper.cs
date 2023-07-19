@@ -1,6 +1,8 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools.V106.Network;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -18,14 +20,44 @@ namespace WebAddressbookTests
         : base(manager)
         { 
         }
-        public bool ContactAvailable()
+        public void AddContactToGroup(ContactData contact, GroupData group)
         {
-            return IsElementPresent(By.Name("entry"));
+            manager.Navigator.OpenHomePage();
+            CleanGroupFilter();
+            SelectContactById(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(5))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
         }
-        public ContactHelper LinkNewContact()
+        public void RemoveContactFromGroup(ContactData contact, GroupData group)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
-            contactCache = null;
+            manager.Navigator.OpenHomePage();
+            GroupFilterByGroup(group.Name);
+            SelectContactById(contact.Id);
+            RemoveFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(5))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void RemoveFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        public void GroupFilterByGroup(string name)
+        {
+            driver.FindElement(By.Name("group")).Click();
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
+        }
+
+        public ContactHelper RemoveContactById(ContactData contact)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectContactById(contact.Id);
+            RemoveContact();
+            CloseAlert();
+            ReturnToHomePage();
             return this;
         }
         public ContactHelper Create(ContactData contact)
@@ -34,20 +66,6 @@ namespace WebAddressbookTests
             FillContactForm(contact);
             LinkNewContact();
             ReturnToHomePage();
-            return this;
-        }
-
-        public ContactHelper FillContactForm(ContactData contact)
-        {
-            Type(By.Name("firstname"), contact.FirstName);
-            Type(By.Name("lastname"), contact.LastName);
-            Type(By.Name("address"), contact.Address);
-            return this;
-        }
-
-        public ContactHelper AddNewContact()
-        {
-            driver.FindElement(By.LinkText("add new")).Click();
             return this;
         }
         public ContactHelper CreateSomeContaсt()
@@ -62,6 +80,49 @@ namespace WebAddressbookTests
             ReturnToHomePage();
             return this;
         }
+        public ContactHelper ContactModificationById(ContactData newData)
+        {
+            EditById(newData.Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToHomePage();
+            return this;
+        }
+
+        public bool ContactAvailable()
+        {
+            return IsElementPresent(By.Name("entry"));
+        }
+        public ContactHelper LinkNewContact()
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            contactCache = null;
+            return this;
+        }
+
+        public ContactHelper FillContactForm(ContactData contact)
+        {
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("address"), contact.Address);
+            return this;
+        }
+        public ContactHelper RemoveContactByNumber(int n)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectContactByNumber(n);
+            RemoveContact();
+            CloseAlert();
+            manager.Navigator.OpenHomePage();
+            return this;
+        }
+
+        public ContactHelper AddNewContact()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
+            return this;
+        }
+
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
@@ -77,14 +138,6 @@ namespace WebAddressbookTests
         public ContactHelper EditById(string id)
         {
             driver.FindElement(By.XPath("//a[@href='edit.php?id="+id+"']")).Click();
-            return this;
-        }
-        public ContactHelper ContactModificationById(ContactData newData)
-        {
-            EditById(newData.Id);
-            FillContactForm(newData);
-            SubmitContactModification();
-            ReturnToHomePage();
             return this;
         }
 
@@ -115,23 +168,31 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("home page")).Click();
             return this;
         }
-        public ContactHelper RemoveContactByNumber(int n)
+        public int GetContactsCount()
         {
-            manager.Navigator.OpenHomePage();
-            SelectContactByNumber(n);
-            RemoveContact();
-            CloseAlert();
-            manager.Navigator.OpenHomePage();
-            return this;
+            System.Threading.Thread.Sleep(500);
+            return driver.FindElements(By.XPath("//table[@id='maintable']/tbody/tr[@name = 'entry']")).Count;
         }
-        public ContactHelper RemoveContactById(ContactData contact)
+
+        public void CommitAddingContactToGroup()
         {
-            manager.Navigator.OpenHomePage();
-            SelectContactById(contact.Id);
-            RemoveContact();
-            CloseAlert();
-            manager.Navigator.OpenHomePage();
-            return this;
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void CleanGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+
+        public void OpenDetailsInfoAboutContact(int index)
+        {
+            index = index + 2;
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td[7]/a/img")).Click();
         }
 
         private List<ContactData> contactCache = null;
@@ -155,12 +216,7 @@ namespace WebAddressbookTests
             }
             return new List<ContactData>(contactCache);
         }
-        public int GetContactsCount()
-        {
-            System.Threading.Thread.Sleep(500);
-            return driver.FindElements(By.XPath("//table[@id='maintable']/tbody/tr[@name = 'entry']")).Count;
-        }
-
+     
         public ContactData GetContactInformationFromTable(int index)
         {
             manager.Navigator.OpenHomePage();   
@@ -216,12 +272,6 @@ namespace WebAddressbookTests
             string allInfoAboutContact = different.Text;
 
             return allInfoAboutContact;
-        }
-
-        public void OpenDetailsInfoAboutContact(int index)
-        {
-            index = index + 2;
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+ index +"]/td[7]/a/img")).Click();
         }
 
         public string SumText(ContactData fromForm)
