@@ -40,17 +40,6 @@ namespace WebAddressbookTests
                 .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
         }
 
-        public void RemoveFromGroup()
-        {
-            driver.FindElement(By.Name("remove")).Click();
-        }
-
-        public void GroupFilterByGroup(string name)
-        {
-            driver.FindElement(By.Name("group")).Click();
-            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
-        }
-
         public ContactHelper RemoveContactById(ContactData contact)
         {
             manager.Navigator.OpenHomePage();
@@ -193,6 +182,16 @@ namespace WebAddressbookTests
         {
             index = index + 2;
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td[7]/a/img")).Click();
+        }
+        public void RemoveFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        public void GroupFilterByGroup(string name)
+        {
+            driver.FindElement(By.Name("group")).Click();
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
         }
 
         private List<ContactData> contactCache = null;
