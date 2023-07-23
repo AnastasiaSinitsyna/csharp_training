@@ -83,7 +83,7 @@ namespace WebAddressbookTests
         }
         public bool GroupAvailable()
         {
-            return IsElementPresent(By.Name("selected[]"));
+            return IsElementPresent(By.XPath("/html/body/div/div[4]/form[2]/div[4]/select/option"));
         }
 
         public GroupHelper UnitGroupModification()

@@ -57,11 +57,13 @@ namespace WebAddressbookTests
             ReturnToHomePage();
             return this;
         }
+
         public ContactHelper CreateSomeContaсt()
         {
             ContactData contact = new ContactData();
             contact.FirstName = "Test";
             contact.LastName = "Test2";
+            contact.Address = "Улица Яшина, 32 г. Оренбург";
 
             AddNewContact();
             FillContactForm(contact);
